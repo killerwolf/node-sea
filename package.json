@@ -2,10 +2,12 @@
   "name": "sea",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node hello.ts"
+    "start": "ts-node hello.ts",
+    "build": "tsc",
+    "bundle": "node build.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +16,7 @@
   "devDependencies": {
     "@types/node": "^22.13.4",
     "commander": "^13.1.0",
+    "esbuild": "^0.19.12",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   }
