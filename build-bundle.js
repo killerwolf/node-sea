@@ -3,7 +3,7 @@ const esbuild = require('esbuild');
 esbuild.build({
   entryPoints: ['hello.ts'],
   bundle: true,
-  outfile: 'dist/bundle.js',
+  outfile: 'dist/bundled/bundle.js',
   platform: 'node',
   target: 'node16',
   format: 'cjs',

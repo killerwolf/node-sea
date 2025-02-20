@@ -1,13 +1,15 @@
 {
-  "name": "sea",
+  "name": "hello-world",
   "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "description": "Simple Hello World",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node hello.ts",
-    "build": "tsc",
-    "bundle": "node build.js"
+    "clean": "rm -rf dist",
+    "build:js": "tsc",
+    "build:bundle": "node build-bundle.js",
+    "build:sea": "node build-sea.js",
+    "build:all": "npm run clean && npm run build:js && npm run build:bundle && npm run build:sea"
   },
   "keywords": [],
   "author": "",
