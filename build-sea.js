@@ -29,7 +29,7 @@ try {
 console.log('Copying node binary...');
 try {
   const nodePath = execSync('command -v node').toString().trim();
-  fs.copyFileSync(nodePath, 'hello');
+  fs.copyFileSync(nodePath, 'dist/hello');
 } catch (error) {
   console.error('Failed to copy node binary:', error.message);
   process.exit(1);
@@ -38,7 +38,7 @@ try {
 // Step 3: Remove existing signature (macOS specific)
 console.log('Removing existing signature...');
 try {
-  execSync('codesign --remove-signature hello');
+  execSync('codesign --remove-signature dist/hello');
 } catch (error) {
   console.error('Failed to remove signature:', error.message);
   process.exit(1);
@@ -47,7 +47,7 @@ try {
 // Step 4: Inject the blob into the binary
 console.log('Injecting SEA blob...');
 try {
-  execSync('npx --yes postject hello NODE_SEA_BLOB dist/sea/sea-prep.blob \
+  execSync('npx --yes postject dist/hello NODE_SEA_BLOB dist/sea/sea-prep.blob \
     --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 \
     --macho-segment-name NODE_SEA');
 } catch (error) {
@@ -58,10 +58,10 @@ try {
 // Step 5: Sign the binary (macOS specific)
 console.log('Signing the binary...');
 try {
-  execSync('codesign --sign - hello');
+  execSync('codesign --sign - dist/hello');
 } catch (error) {
   console.error('Failed to sign binary:', error.message);
   process.exit(1);
 }
 
-console.log('SEA binary creation complete! The executable is ready: ./hello');
+console.log('SEA binary creation complete! The executable is ready: ./dist/hello');
