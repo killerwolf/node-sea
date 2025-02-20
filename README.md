@@ -1,6 +1,6 @@
 # Node.js Single Executable Application (SEA) Example
 
-This project demonstrates how to create a Single Executable Application (SEA) using Node.js. SEAs allow you to bundle your Node.js application into a single binary executable, making it easier to distribute and run without requiring Node.js installation on the target machine.
+This project demonstrates how to create a Single Executable Application (SEA) using Node.js. SEAs allow you to bundle your Node.js application into a single binary executable, making it easier to distribute and run without requiring Node.js installation on the target machine. For more information about SEAs, see the [official Node.js documentation](https://nodejs.org/api/single-executable-applications.html).
 
 ## Prerequisites
 
@@ -15,6 +15,10 @@ This project demonstrates how to create a Single Executable Application (SEA) us
 ├── hello.ts                 # Main application entry point
 ├── lib/                    # Application modules
 │   └── greeter.ts          # Example module
+├── dist/                   # Build output directory
+│   ├── bundled/           # Contains bundled application
+│   ├── sea/               # Contains SEA preparation files
+│   └── transpiled/        # Contains compiled TypeScript
 ├── build-bundle.js         # esbuild bundling script
 ├── build-sea.js           # SEA creation script
 ├── sea-config.json        # SEA configuration
@@ -85,10 +89,11 @@ Or, you can run each step individually:
 
 ## Running the Application
 
-After building, you'll find an executable named `hello` in the project root:
+After building, you'll find an executable named `hello` in the dist directory. You can run it with or without parameters:
 
 ```bash
-./hello
+./dist/hello FAF
+Hello, FAF!
 ```
 
 This binary contains everything needed to run your application, including the Node.js runtime.
@@ -133,3 +138,7 @@ ISC
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+## References
+
+- [Node.js Single Executable Applications Documentation](https://nodejs.org/api/single-executable-applications.html) - Official documentation for creating and working with SEAs
