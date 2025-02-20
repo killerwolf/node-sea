@@ -9,5 +9,4 @@ esbuild.build({
   format: 'cjs',
   sourcemap: true,
   minify: true,
-  //external: ['commander'],  // External dependencies that should not be bundled
 }).catch(() => process.exit(1));
