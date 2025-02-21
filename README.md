@@ -135,6 +135,39 @@ The `build-sea.js` script handles the SEA creation process:
 
 ISC
 
+## Future Improvements
+
+Here are some potential enhancements that could be implemented to improve the project:
+
+1. **Automated Testing**
+   - Add unit tests for core functionality using Jest or Mocha
+   - Implement integration tests for the SEA build process
+   - Add end-to-end testing for the executable
+   - Set up test coverage reporting
+
+2. **Continuous Integration/Deployment**
+   - Set up GitLab CI/CD pipeline
+   - Implement automated builds for different platforms
+   - Add automated release management
+   - Configure deployment workflows
+
+3. **Code Quality**
+   - Integrate Biome for code formatting and linting
+   - Implement SonarQube for code quality metrics
+   - Set up pre-commit hooks for code quality checks
+
+4. **Documentation**
+   - Add JSDoc documentation for all functions
+   - Generate API documentation
+   - Create contribution guidelines
+   - Add architecture diagrams
+
+5. **Performance**
+   - Implement build size optimization
+   - Add performance benchmarking
+   - Optimize startup time
+   - Implement caching strategies
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
