@@ -147,7 +147,7 @@ Here are some potential enhancements that could be implemented to improve the pr
    - Set up test coverage reporting
 
 2. **Continuous Integration/Deployment**
-   - Set up GitLab CI/CD pipeline
+   - Set up GitHub Actions
    - Implement automated builds for different platforms
    - Add automated release management
    - Configure deployment workflows
