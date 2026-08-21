@@ -5,7 +5,7 @@ esbuild.build({
   bundle: true,
   outfile: 'dist/bundled/bundle.js',
   platform: 'node',
-  target: 'node16',
+  target: 'node24',
   format: 'cjs',
   sourcemap: true,
   minify: true,

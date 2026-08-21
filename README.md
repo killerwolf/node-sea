@@ -2,10 +2,12 @@
 
 This project demonstrates how to create a Single Executable Application (SEA) using Node.js. SEAs allow you to bundle your Node.js application into a single binary executable, making it easier to distribute and run without requiring Node.js installation on the target machine. For more information about SEAs, see the [official Node.js documentation](https://nodejs.org/api/single-executable-applications.html).
 
+> **Stability note:** SEA is still listed as *Experimental (1.1 – Active development)* in the Node.js docs, not Stable — treat it accordingly, even though it's functional enough for real use.
+
 ## Prerequisites
 
-- Node.js (v16 or later)
-- macOS (for this specific example; SEA supports other platforms with slight modifications)
+- Node.js **26** or later (see `.nvmrc`) — required for the one-step `node --build-sea` builder introduced in v25.5.0. It has **not** been backported to the Node 24 "Krypton" LTS line as of this writing; Node 26 becomes Active LTS in October 2026. If you're stuck on an older Node, see [Building on older Node versions](#building-on-older-node-versions) below.
+- macOS, Windows, or Linux (any distro except Alpine; any arch except s390x). On macOS, only arm64 is officially tested by Node — x64 is not currently covered.
 - npm (Node Package Manager)
 
 ## Project Structure
@@ -17,7 +19,7 @@ This project demonstrates how to create a Single Executable Application (SEA) us
 │   └── greeter.ts          # Example module
 ├── dist/                   # Build output directory
 │   ├── bundled/           # Contains bundled application
-│   ├── sea/               # Contains SEA preparation files
+│   ├── hello              # The final SEA executable
 │   └── transpiled/        # Contains compiled TypeScript
 ├── build-bundle.js         # esbuild bundling script
 ├── build-sea.js           # SEA creation script
@@ -81,11 +83,7 @@ Or, you can run each step individually:
    ```bash
    npm run build:sea
    ```
-   This script:
-   - Generates the SEA preparation blob
-   - Copies the Node.js binary
-   - Injects the application code
-   - Signs the binary (macOS specific)
+   This script runs `node --build-sea sea-config.json`, which generates the blob, copies the Node.js binary, and injects the code in one step, then signs the result on macOS.
 
 ## Running the Application
 
@@ -112,11 +110,14 @@ The `build-bundle.js` script uses esbuild to:
 
 ### 3. SEA Creation
 The `build-sea.js` script handles the SEA creation process:
-1. Generates a preparation blob using `sea-config.json`
-2. Copies the Node.js binary
-3. Removes existing signatures (macOS specific)
-4. Injects the application code into the binary
-5. Signs the resulting binary (macOS specific)
+1. Runs `node --build-sea sea-config.json`, which generates the blob, copies the Node.js binary, and injects the code into it — all internally, using the same [LIEF](https://lief.re/)-based logic that used to live in the external `postject` tool (now folded into Node core and no longer needed as a dependency)
+2. Signs the resulting binary (macOS specific)
+
+`sea-config.json` also enables `useCodeCache`, which pre-compiles the bundle to V8 bytecode at build time for a faster cold start. Other options worth knowing about: `assets` (embed arbitrary files, read back via `node:sea`), `useSnapshot` (V8 heap snapshot for even faster startup), and `execArgv` (bake in default CLI flags).
+
+#### Building on older Node versions
+
+If you're on Node 24 LTS or earlier, `--build-sea` doesn't exist yet — use the legacy manual flow instead (blob generation + [`postject`](https://github.com/nodejs/postject) injection + codesign), as documented in the [Node.js SEA docs](https://nodejs.org/api/single-executable-applications.html) for your version. This repo only implements the modern one-step flow.
 
 ## Customizing the Project
 
@@ -155,6 +156,7 @@ Here are some potential enhancements that could be implemented to improve the pr
    - Integrate Biome for code formatting and linting
    - Implement SonarQube for code quality metrics
    - Set up pre-commit hooks for code quality checks
+   - Watch `ts-node` for TypeScript 7 (native Go compiler, GA July 2026) support before upgrading past TS 5.9 — TS 7 shipped without a stable programmatic API, which `ts-node` depends on
 
 4. **Documentation**
    - Add JSDoc documentation for all functions

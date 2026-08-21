@@ -16,10 +16,10 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "@types/node": "^22.13.4",
-    "commander": "^13.1.0",
-    "esbuild": "^0.19.12",
+    "@types/node": "^24.13.3",
+    "commander": "^15.0.0",
+    "esbuild": "^0.28.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.3"
+    "typescript": "^5.9.3"
   }
 }
