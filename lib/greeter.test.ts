@@ -1,6 +1,6 @@
-import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { Greeter } from './greeter';
+import { test } from 'node:test';
+import { sayHello } from './greeter';
 
 test('sayHello prints a greeting with the given name', () => {
   const lines: string[] = [];
@@ -8,7 +8,7 @@ test('sayHello prints a greeting with the given name', () => {
   console.log = (line: string) => lines.push(line);
 
   try {
-    Greeter.sayHello('World');
+    sayHello('World');
   } finally {
     console.log = originalLog;
   }
@@ -23,7 +23,7 @@ test('sayHello reflects the name back verbatim', () => {
   console.log = (line: string) => lines.push(line);
 
   try {
-    Greeter.sayHello('Node 26');
+    sayHello('Node 26');
   } finally {
     console.log = originalLog;
   }

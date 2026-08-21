@@ -10,9 +10,17 @@
     "build:js": "tsc",
     "build:bundle": "node build-bundle.js",
     "build:sea": "node build-sea.js",
-    "build:all": "npm run clean && npm run build:js && npm run build:bundle && npm run build:sea"
+    "build:all": "npm run clean && npm run build:js && npm run build:bundle && npm run build:sea",
+    "lint": "biome check .",
+    "format": "biome check --write ."
   },
-  "keywords": ["node", "sea", "single-executable-application", "typescript", "esbuild"],
+  "keywords": [
+    "node",
+    "sea",
+    "single-executable-application",
+    "typescript",
+    "esbuild"
+  ],
   "author": "Hamdi LAADHARI",
   "license": "ISC",
   "type": "commonjs",
@@ -28,6 +36,7 @@
     "node": ">=26.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.9",
     "@types/node": "^24.13.3",
     "commander": "^15.0.0",
     "esbuild": "^0.28.2",

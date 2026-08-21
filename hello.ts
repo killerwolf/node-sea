@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { Greeter } from './lib/greeter';
+import { sayHello } from './lib/greeter';
 
 const program = new Command();
 
@@ -8,7 +8,7 @@ program
   .description('A simple greeting command')
   .argument('<name>', 'name to greet')
   .action((name: string) => {
-    Greeter.sayHello(name);
+    sayHello(name);
   });
 
 program.parse();
