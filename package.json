@@ -1,7 +1,8 @@
 {
-  "name": "hello-world",
+  "name": "node-sea",
   "version": "1.0.0",
-  "description": "Simple Hello World",
+  "description": "Boilerplate for building a standalone, dependency-free executable from a TypeScript app using Node.js Single Executable Applications (SEA)",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node hello.ts",
@@ -11,10 +12,21 @@
     "build:sea": "node build-sea.js",
     "build:all": "npm run clean && npm run build:js && npm run build:bundle && npm run build:sea"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["node", "sea", "single-executable-application", "typescript", "esbuild"],
+  "author": "Hamdi LAADHARI",
   "license": "ISC",
   "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/killerwolf/node-sea.git"
+  },
+  "homepage": "https://github.com/killerwolf/node-sea#readme",
+  "bugs": {
+    "url": "https://github.com/killerwolf/node-sea/issues"
+  },
+  "engines": {
+    "node": ">=26.0.0"
+  },
   "devDependencies": {
     "@types/node": "^24.13.3",
     "commander": "^15.0.0",
