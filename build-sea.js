@@ -1,5 +1,5 @@
-const { execSync } = require('child_process');
-const fs = require('fs');
+const { execSync } = require('node:child_process');
+const fs = require('node:fs');
 
 // Ensure the bundle exists
 if (!fs.existsSync('./dist/bundled/bundle.js')) {
@@ -14,10 +14,14 @@ fs.mkdirSync('dist', { recursive: true });
 console.log('Building SEA binary (node --build-sea)...');
 try {
   execSync('node --build-sea sea-config.json', { stdio: 'inherit' });
-} catch (error) {
+} catch {
   console.error('\nFailed to build the SEA binary.');
-  console.error(`node --build-sea requires Node.js 25.5+ — you are running ${process.version}.`);
-  console.error('As of this writing it only ships on the Node 26 "Current" release line (not yet backported to the 24 LTS line). Switch with: nvm install 26 && nvm use 26');
+  console.error(
+    `node --build-sea requires Node.js 25.5+ — you are running ${process.version}.`,
+  );
+  console.error(
+    'As of this writing it only ships on the Node 26 "Current" release line (not yet backported to the 24 LTS line). Switch with: nvm install 26 && nvm use 26',
+  );
   process.exit(1);
 }
 
@@ -43,8 +47,12 @@ if (process.platform === 'darwin') {
     process.exit(1);
   }
 } else if (process.platform === 'win32') {
-  console.log(`On Windows, sign ${outputPath} yourself if you need a trusted binary:`);
+  console.log(
+    `On Windows, sign ${outputPath} yourself if you need a trusted binary:`,
+  );
   console.log(`  signtool sign /fd SHA256 ${outputPath}`);
 }
 
-console.log(`SEA binary creation complete! The executable is ready: ./${outputPath}`);
+console.log(
+  `SEA binary creation complete! The executable is ready: ./${outputPath}`,
+);
