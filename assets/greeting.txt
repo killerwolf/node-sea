@@ -1,0 +1,1 @@
+This message was bundled directly into the binary via sea-config.json's "assets" field — no external file was shipped alongside the executable to read it from.

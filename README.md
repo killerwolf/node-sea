@@ -16,14 +16,19 @@ This project demonstrates how to create a Single Executable Application (SEA) us
 .
 ├── hello.ts                 # Main application entry point
 ├── lib/                    # Application modules
-│   └── greeter.ts          # Example module
+│   ├── greeter.ts          # Example module
+│   └── greeter.test.ts     # Tests (node:test)
+├── assets/                 # Files embedded into the binary via sea-config.json
+│   └── greeting.txt
 ├── dist/                   # Build output directory
 │   ├── bundled/           # Contains bundled application
-│   ├── hello              # The final SEA executable
+│   ├── hello              # The final SEA executable (hello.exe on Windows)
 │   └── transpiled/        # Contains compiled TypeScript
+├── .github/workflows/ci.yml # Lint + cross-platform build matrix
 ├── build-bundle.js         # esbuild bundling script
 ├── build-sea.js           # SEA creation script
 ├── sea-config.json        # SEA configuration
+├── biome.json              # Lint/format config
 └── tsconfig.json          # TypeScript configuration
 ```
 
@@ -92,9 +97,10 @@ After building, you'll find an executable named `hello` in the dist directory. Y
 ```bash
 ./dist/hello FAF
 Hello, FAF!
+This message was bundled directly into the binary via sea-config.json's "assets" field — no external file was shipped alongside the executable to read it from.
 ```
 
-This binary contains everything needed to run your application, including the Node.js runtime.
+This binary contains everything needed to run your application, including the Node.js runtime. The second line comes from `assets/greeting.txt`, embedded at build time and read back via `node:sea` — see below.
 
 ## How It Works
 
@@ -113,7 +119,7 @@ The `build-sea.js` script handles the SEA creation process:
 1. Runs `node --build-sea sea-config.json`, which generates the blob, copies the Node.js binary, and injects the code into it — all internally, using the same [LIEF](https://lief.re/)-based logic that used to live in the external `postject` tool (now folded into Node core and no longer needed as a dependency)
 2. Signs the resulting binary (macOS specific)
 
-`sea-config.json` also enables `useCodeCache`, which pre-compiles the bundle to V8 bytecode at build time for a faster cold start. Other options worth knowing about: `assets` (embed arbitrary files, read back via `node:sea`), `useSnapshot` (V8 heap snapshot for even faster startup), and `execArgv` (bake in default CLI flags).
+`sea-config.json` also enables `useCodeCache`, which pre-compiles the bundle to V8 bytecode at build time for a faster cold start, and demonstrates `assets`: `assets/greeting.txt` is embedded into the binary at build time and read back at runtime in `hello.ts` via `node:sea`'s `isSea()` / `getAsset()`. It only prints when actually running as a SEA — `npm start` (plain ts-node, not a SEA) skips it. Another option worth knowing about: `useSnapshot` (V8 heap snapshot for even faster startup — not used here, since it requires restructuring the entry point around `v8.startupSnapshot`) and `execArgv` (bake in default CLI flags).
 
 #### Building on older Node versions
 
@@ -128,9 +134,8 @@ If you're on Node 24 LTS or earlier, `--build-sea` doesn't exist yet — use the
 
 ## Notes
 
-- The SEA binary is platform-specific; you'll need to build it on each target platform
+- The SEA binary is platform-specific; you'll need to build it on each target platform. CI builds and smoke-tests it on Linux, macOS, and Windows on every push/PR (see `.github/workflows/ci.yml`).
 - Source maps are included for debugging, but not used in the final SEA
-- The build process is optimized for macOS but can be adapted for other platforms
 
 ## License
 
@@ -138,37 +143,26 @@ ISC
 
 ## Future Improvements
 
-Here are some potential enhancements that could be implemented to improve the project:
+Done so far: unit tests (`node:test`), CI with a cross-platform build matrix (GitHub Actions), and linting/formatting (Biome). Still open:
 
-1. **Automated Testing**
-   - Add unit tests for core functionality using Jest or Mocha
-   - Implement integration tests for the SEA build process
-   - Add end-to-end testing for the executable
-   - Set up test coverage reporting
+1. **Testing**
+   - Integration/end-to-end tests for the built binary itself, beyond the CI smoke test
+   - Test coverage reporting
 
-2. **Continuous Integration/Deployment**
-   - Set up GitHub Actions
-   - Implement automated builds for different platforms
-   - Add automated release management
-   - Configure deployment workflows
+2. **Release automation**
+   - Automated release management (tag → build matrix → attach binaries to a GitHub Release)
 
 3. **Code Quality**
-   - Integrate Biome for code formatting and linting
-   - Implement SonarQube for code quality metrics
-   - Set up pre-commit hooks for code quality checks
    - Watch `ts-node` for TypeScript 7 (native Go compiler, GA July 2026) support before upgrading past TS 5.9 — TS 7 shipped without a stable programmatic API, which `ts-node` depends on
+   - Pre-commit hooks (e.g. via Biome's own git hooks support)
 
 4. **Documentation**
    - Add JSDoc documentation for all functions
-   - Generate API documentation
    - Create contribution guidelines
-   - Add architecture diagrams
 
 5. **Performance**
-   - Implement build size optimization
-   - Add performance benchmarking
-   - Optimize startup time
-   - Implement caching strategies
+   - Add performance/startup-time benchmarking
+   - Consider `useSnapshot` for faster cold starts (see `sea-config.json` discussion above)
 
 ## Contributing
 

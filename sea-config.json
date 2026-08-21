@@ -2,5 +2,8 @@
   "main": "./dist/bundled/bundle.js",
   "output": "./dist/hello",
   "disableExperimentalSEAWarning": true,
-  "useCodeCache": true
+  "useCodeCache": true,
+  "assets": {
+    "greeting.txt": "./assets/greeting.txt"
+  }
 }
