@@ -4,7 +4,7 @@
   "description": "Boilerplate for building a standalone, dependency-free executable from a TypeScript app using Node.js Single Executable Applications (SEA)",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --require ts-node/register --test lib/greeter.test.ts",
     "start": "ts-node hello.ts",
     "clean": "rm -rf dist",
     "build:js": "tsc",
